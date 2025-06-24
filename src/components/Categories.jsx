@@ -1,7 +1,6 @@
 import React from "react";
 
-export function Categories({value, onChangeCategory}) {
- 
+export function Categories({ value, onChangeCategory }) {
   const categories = [
     "Все",
     "Мясные",
