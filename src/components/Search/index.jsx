@@ -4,6 +4,14 @@ import { SearchContext } from "../../App";
 
 const Search = () => {
   const { searchValue, setSearchValue } = React.useContext(SearchContext);
+  const inputRef = React.useRef();
+  const onClickClear=()=>{
+    setSearchValue('');
+    // document.querySelector("input").focus();
+    inputRef.current.focus()
+  }
+
+  
   return (
     <div className={styles.root}>
       <svg
@@ -22,6 +30,7 @@ const Search = () => {
         <line x1="21" x2="16.65" y1="21" y2="16.65" />
       </svg>
       <input
+        ref={inputRef}
         value={searchValue}
         onChange={(event) => setSearchValue(event.target.value)}
         className={styles.input}
@@ -30,7 +39,7 @@ const Search = () => {
 
       {searchValue && (
         <svg
-          onClick={() => setSearchValue("")}
+          onClick={onClickClear}
           className={styles.clearIcon}
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 50 50"
