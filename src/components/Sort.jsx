@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setSort } from "./redux/slices/filterSlice";
 
-const list = [
+export const list = [
   { name: "популярности (DESC)", sortProperty: "rating" },
   { name: "популярности (ASC)", sortProperty: "-rating" },
   { name: "цене (DESC)", sortProperty: "price" },
@@ -13,17 +13,31 @@ const list = [
 
 export function Sort() {
   const dispatch = useDispatch();
-  const sort = useSelector((state)=>state.filterSlice.sort)
+  const sort = useSelector((state) => state.filterSlice.sort);
+  const sortRef = React.useRef();
   const [open, setOpen] = React.useState(false);
-  
 
   const onClickListItem = (obj) => {
-    dispatch(setSort(obj))
+    dispatch(setSort(obj));
     setOpen(false);
   };
-
+  React.useEffect(() => {
+    console.log("Sort mount");
+    const handleClickOutside = (event) => {
+      const path = event.composedPath();
+      if (!path.includes(sortRef.current)) {
+        setOpen(false);
+        console.log("click outside");
+      }
+    };
+    document.body.addEventListener("click", handleClickOutside);
+    return () => {
+      console.log("Sort unmount");
+      document.body.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
   return (
-    <div className="sort">
+    <div ref={sortRef} className="sort">
       <div className="sort__label">
         <svg
           width="10"
